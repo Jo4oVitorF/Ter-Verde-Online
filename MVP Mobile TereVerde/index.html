@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terê Verde Online - Protótipo</title>
+
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-200 flex items-center justify-center min-h-screen p-4">
+    <div id="app-shell" class="app-shell w-full bg-gray-50 rounded-2xl mx-auto">
+        <header class="bg-green-700 text-white p-4 shadow-md z-20">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold">Terê Verde Online</h1>
+                <button id="admin-login-btn" class="text-sm bg-white text-green-700 font-semibold px-3 py-1 rounded-full shadow hover:bg-gray-100 transition-colors">
+                    Admin
+                </button>
+                <button id="admin-logout-btn" class="hidden text-sm bg-red-500 text-white font-semibold px-3 py-1 rounded-full shadow hover:bg-red-600 transition-colors">
+                    Sair
+                </button>
+            </div>
+        </header>
+        <main id="main-content" class="p-4">
+            <div id="page-inicio" class="page active space-y-6">
+                <div class="bg-white p-5 rounded-lg shadow">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao Terê Verde!</h2>
+                    <p class="text-gray-600">Descubra a biodiversidade, trilhas e cachoeiras dos nossos parques municipais. Planeje sua próxima aventura!</p>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-700">Destaques</h3>
+                    <div class="relative rounded-lg shadow-lg overflow-hidden">
+                        <img src="src/assets/img/cachu-frades.jpg" alt="Cachoeira dos Frades" class="w-full h-48 object-cover">
+                        <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/70 to-transparent">
+                            <h4 class="text-white text-lg font-bold">Cachoeira dos Frades</h4>
+                            <p class="text-white text-sm">Uma queda d'água deslumbrante, perfeita para fotos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-700">Novidades e Alertas</h3>
+                    <div id="novidades-lista" class="space-y-3">
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-explorar" class="page hidden space-y-6">
+                <h2 class="text-2xl font-bold text-gray-800">Explore os Parques</h2>
+                
+                <div id="atracoes-lista" class="space-y-4">
+                </div>
+            </div>
+
+            <div id="page-mapa" class="page hidden space-y-6">
+                <h2 class="text-2xl font-bold text-gray-800">Mapa Interativo</h2>
+                <p class="text-gray-600">Encontre trilhas, cachoeiras e pontos de interesse. Toque nos ícones para mais informações.</p>
+                <div id="map" class="shadow-lg"></div>
+            </div>
+
+            <div id="page-eventos" class="page hidden space-y-6">
+                <h2 class="text-2xl font-bold text-gray-800">Eventos Programados</h2>
+                <div id="eventos-lista" class="space-y-4">
+                </div>
+            </div>
+            
+            <div id="page-admin" class="page hidden space-y-6">
+                <h2 class="text-2xl font-bold text-gray-800">Painel do Administrador</h2>
+                <p class="text-gray-600">Gerencie o conteúdo do site.</p>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="btn-show-modal-novidades" class="flex flex-col items-center justify-center bg-blue-500 text-white p-4 rounded-lg shadow hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-plus-circle text-2xl mb-2"></i>
+                        <span class="font-semibold text-sm">Adicionar Novidade</span>
+                    </button>
+                    
+                    <button id="btn-show-modal-horarios" class="flex flex-col items-center justify-center bg-green-500 text-white p-4 rounded-lg shadow hover:bg-green-600 transition-colors">
+                        <i class="fas fa-clock text-2xl mb-2"></i>
+                        <span class="font-semibold text-sm">Definir Horários</span>
+                    </button>
+
+                    <button class="flex flex-col items-center justify-center bg-yellow-500 text-white p-4 rounded-lg shadow hover:bg-yellow-600 transition-colors">
+                        <i class="fas fa-calendar-alt text-2xl mb-2"></i>
+                        <span class="font-semibold text-sm">Gerenciar Eventos</span>
+                    </button>
+
+                    <button class="flex flex-col items-center justify-center bg-gray-500 text-white p-4 rounded-lg shadow hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-sliders-h text-2xl mb-2"></i>
+                        <span class="font-semibold text-sm">Configurações</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+        <nav id="bottom-nav" class="flex justify-around p-3 bg-white border-t border-gray-200 shadow-inner z-20">
+            <button data-page="inicio" class="nav-button active flex flex-col items-center text-gray-500 w-1/4">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs font-medium mt-1">Início</span>
+            </button>
+            <button data-page="explorar" class="nav-button flex flex-col items-center text-gray-500 w-1/4">
+                <i class="fas fa-hiking text-xl"></i>
+                <span class="text-xs font-medium mt-1">Explorar</span>
+            </button>
+            <button data-page="mapa" class="nav-button flex flex-col items-center text-gray-500 w-1/4">
+                <i class="fas fa-map-marked-alt text-xl"></i>
+                <span class="text-xs font-medium mt-1">Mapa</span>
+            </button>
+            <button data-page="eventos" class="nav-button flex flex-col items-center text-gray-500 w-1/4">
+                <i class="fas fa-calendar-check text-xl"></i>
+                <span class="text-xs font-medium mt-1">Eventos</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- MODAIS -->
+
+    <!-- Modal de Login do Admin -->
+    <div id="login-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4 invisible opacity-0">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm">
+            <h3 class="text-lg font-bold mb-4">Login de Administrador</h3>
+            <p id="login-error" class="text-red-500 text-sm mb-3 hidden">Usuário ou senha inválidos.</p>
+            
+            <form id="login-form">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Usuário</label>
+                    <input type="text" id="username" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" value="admin">
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                    <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" value="1234">
+                    <p class="text-xs text-gray-500 mt-1">Psst: use 'admin' e '1234' para este protótipo.</p>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button type="button" id="btn-cancel-login" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">Entrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Adicionar Novidade -->
+    <div id="modal-add-novidade" class="modal fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4 invisible opacity-0">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm">
+            <h3 class="text-lg font-bold mb-4">Adicionar Novidade</h3>
+            <form id="form-add-novidade">
+                <div class="mb-4">
+                    <label for="novidade-titulo" class="block text-sm font-medium text-gray-700 mb-1">Título</label>
+                    <input type="text" id="novidade-titulo" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="novidade-descricao" class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                    <textarea id="novidade-descricao" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="novidade-tipo" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Alerta</label>
+                    <select id="novidade-tipo" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                        <option value="info">Informação (Azul)</option>
+                        <option value="aviso">Aviso (Amarelo)</option>
+                        <option value="perigo">Perigo (Vermelho)</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button type="button" id="btn-cancel-novidade" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Publicar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal de Horários (Exemplo) -->
+    <div id="modal-set-horarios" class="modal fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4 invisible opacity-0">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm">
+            <h3 class="text-lg font-bold mb-4">Horários de Funcionamento</h3>
+            <p class="text-gray-600 mb-4">Aqui o admin poderia configurar os horários de parques e eventos.</p>
+            <div class="mb-4">
+                <label for="horario-parque-a" class="block text-sm font-medium text-gray-700 mb-1">Parque Montanhas de Terê</label>
+                <input type="text" id="horario-parque-a" class="w-full px-3 py-2 border border-gray-300 rounded-md" value="08:00 - 17:00 (Seg-Dom)">
+            </div>
+             <div class="flex justify-end gap-3">
+                <button type="button" id="btn-cancel-horarios" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors">Fechar</button>
+            </div>
+        </div>
+    </div>
+        <script src="data/db.js"></script>
+    
+        <script src="src/js/app.js"></script>
+    </body>
+</html>

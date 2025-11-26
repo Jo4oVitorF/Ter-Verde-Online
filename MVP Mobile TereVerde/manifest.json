@@ -1,0 +1,21 @@
+{
+  "name": "Terê Verde Online",
+  "short_name": "TerêVerde",
+  "description": "Descubra parques, trilhas e biodiversidade em Teresópolis.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#15803d",
+  "icons": [
+    {
+      "src": "https://placehold.co/192x192/15803d/ffffff?text=TVO&font=inter",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://placehold.co/512x512/15803d/ffffff?text=TVO&font=inter",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    -webkit-tap-highlight-color: transparent;
+}
+
+.app-shell {
+    max-width: 450px;
+    height: 90vh;
+    min-height: 640px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#main-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+#bottom-nav .nav-button.active {
+    color: #166534;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 0.5rem;
+    z-index: 10;
+}
+
+.modal {
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
